@@ -2,6 +2,12 @@ version: '2'
 services:
   db:
     image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: rails-on-docker-example
   web:
     build: .
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
@@ -11,3 +17,10 @@ services:
       - 3000:3000
     depends_on:
       - db
+    links:
+      - db
+    environment:
+      DB_USER: appuser
+      DB_NAME: rails-on-docker-example
+      DB_PASSWORD: password
+      DB_HOST: db
